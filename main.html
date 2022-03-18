@@ -41,18 +41,47 @@ function create(){
     this.physics.add.collider(player, platforms);
 }
 function update(){
-if (cursors.left.isDown){ 
-player.setVelocityX(-160); 
-}
-else if (cursors.right.isDown){ 
-player.setVelocityX(160); 
-}
-else{ 
-player.setVelocityX(0);
-}
-if (cursors.up.isDown){
-player.setVelocityY(-160); 
-}
+    if (cursors.up.isDown){
+            if (cursors.down.isDown) {
+                player.setVelocityY(0);
+            }
+            else {
+                if (player.body.velocity.x != 0) {
+                    player.setVelocityY(-200);
+                } else {
+                    player.setVelocityY(-300);
+                }
+            }
+        }
+        else if (cursors.down.isDown){
+            if (player.body.velocity.x != 0) {
+                    player.setVelocityY(200);
+                } else {
+                    player.setVelocityY(300);
+                }
+        }
+        else {player.setVelocityY(0);}
+        //Déplacement horizontal
+        if (cursors.left.isDown){
+            if (cursors.right.isDown) {
+                player.setVelocityX(0);
+            }
+            else {
+                if (player.body.velocity.y != 0) {
+                    player.setVelocityX(-200);
+                } else {
+                    player.setVelocityX(-300);
+                }
+            }
+        }
+        else if (cursors.right.isDown){
+            if (player.body.velocity.y != 0) {
+                    player.setVelocityX(200);
+                } else {
+                    player.setVelocityX(300);
+                }
+        }
+        else {player.setVelocityX(0);}
 }
 
 </script>
