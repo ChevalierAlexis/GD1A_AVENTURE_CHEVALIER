@@ -20,9 +20,12 @@ debug: false
 scene: {preload: preload, create: create, update: update }
 };
 new Phaser.Game(config);
+var bullets;
+var lastFired = 0;
 function preload(){
     this.load.image('sky', 'assets/sky.png');
 this.load.image('ground', 'assets/platform.png');
+this.load.image('bullet', 'assets/bullet.png');
 
 this.load.spritesheet('perso','assets/Proto.png',
 { frameWidth: 32, frameHeight: 48 });
@@ -39,8 +42,54 @@ function create(){
     player = this.physics.add.sprite(100, 450, 'perso');
     player.setCollideWorldBounds(true);
     this.physics.add.collider(player, platforms);
+    var Bullet = new Phaser.Class({
+
+Extends: Phaser.GameObjects.Image,
+
+initialize:
+
+function Bullet (scene)
+{
+    Phaser.GameObjects.Image.call(this, scene, 0, 0, 'bullet');
+
+    this.speed = Phaser.Math.GetSpeed(400, 1);
+},
+
+fire: function (x, y)
+{
+    this.setPosition(x, y - 50);
+
+    this.setActive(true);
+    this.setVisible(true);
+},
+
+update: function (time, delta)
+{
+    this.y -= this.speed * delta;
+
+    if (this.y < -50)
+    {
+        this.setActive(false);
+        this.setVisible(false);
+    }
 }
-function update(){
+
+});
+
+bullets = this.add.group({
+classType: Bullet,
+maxSize: 2,
+runChildUpdate: true
+});
+
+ship = this.add.sprite(400, 500, 'ship').setDepth(1);
+
+cursors = this.input.keyboard.createCursorKeys();
+
+speed = Phaser.Math.GetSpeed(300, 1);
+}
+
+function update(time, delta){
     if (cursors.up.isDown){
             if (cursors.down.isDown) {
                 player.setVelocityY(0);
@@ -82,6 +131,26 @@ function update(){
                 }
         }
         else {player.setVelocityX(0);}
+        if (cursors.left.isDown)
+    {
+        ship.x -= speed * delta;
+    }
+    else if (cursors.right.isDown)
+    {
+        ship.x += speed * delta;
+    }
+
+    if (cursors.space.isDown && time > lastFired)
+    {
+        var bullet = bullets.get();
+
+        if (bullet)
+        {
+            bullet.fire(ship.x, ship.y);
+
+            lastFired = time + 50;
+        }
+    }
 }
 
 </script>
