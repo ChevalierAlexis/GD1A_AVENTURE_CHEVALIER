@@ -22,6 +22,7 @@ scene: {preload: preload, create: create, update: update }
 new Phaser.Game(config);
 var bullets;
 var lastFired = 0;
+var isDown = false;
 function preload(){
     this.load.image('sky', 'assets/sky.png');
 this.load.image('ground', 'assets/platform.png');
@@ -55,12 +56,22 @@ function Bullet (scene)
     this.speed = Phaser.Math.GetSpeed(400, 1);
 },
 
-fire: function (x, y)
-{
-    this.setPosition(x, y - 50);
 
-    this.setActive(true);
-    this.setVisible(true);
+fire: function (x, y)
+{            this.setActive(true);
+            this.setVisible(true);
+
+            //  Bullets fire from the middle of the screen to the given x/y
+            this.setPosition(400, 300);
+
+            var angle = Phaser.Math.Angle.Between(x, y, 400, 300);
+
+            this.setRotation(angle);
+
+            this.incX = Math.cos(angle);
+            this.incY = Math.sin(angle);
+
+            this.lifespan = 1000;
 },
 
 update: function (time, delta)
@@ -82,11 +93,29 @@ maxSize: 2,
 runChildUpdate: true
 });
 
-ship = this.add.sprite(400, 500, 'ship').setDepth(1);
 
 cursors = this.input.keyboard.createCursorKeys();
 
 speed = Phaser.Math.GetSpeed(300, 1);
+this.input.on('pointermove', function (pointer) {
+
+mouseX = pointer.x;
+mouseY = pointer.y;
+
+});
+
+this.input.on('pointerdown', function (pointer) {
+
+isDown = true;
+mouseX = pointer.x;
+mouseY = pointer.y;
+
+});
+this.input.on('pointerup', function (pointer) {
+
+isDown = false;
+
+});
 }
 
 function update(time, delta){
@@ -133,24 +162,24 @@ function update(time, delta){
         else {player.setVelocityX(0);}
         if (cursors.left.isDown)
     {
-        ship.x -= speed * delta;
+        player.x -= speed * delta;
     }
     else if (cursors.right.isDown)
     {
-        ship.x += speed * delta;
+        player.x += speed * delta;
     }
 
-    if (cursors.space.isDown && time > lastFired)
+    if (isDown && time > lastFired)
     {
         var bullet = bullets.get();
 
         if (bullet)
         {
-            bullet.fire(ship.x, ship.y);
+            bullet.fire(mouseX, mouseY);
 
             lastFired = time + 50;
-        }
-    }
+        }}
+    player.setRotation(Phaser.Math.Angle.Between(mouseX, mouseY, player.x, player.y) - Math.PI / 2);
 }
 
 </script>
