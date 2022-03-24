@@ -66,7 +66,7 @@ fire: function (x, y)
 
             this.setPosition(player.x, player.y);
 
-            var angle = Phaser.Math.Angle.Between(x, y, 400, 300);
+            var angle =-90//Phaser.Math.Angle.Between(x, y, 400, 300);
 
             this.setRotation(angle);
 
@@ -177,7 +177,7 @@ function update(time, delta){
 
         if (bullet)
         {
-            bullet.fire(player.x, player.y);               //rajouter pour tirer dans la direction du joueur
+            bullet.fire(player.x,player.y);               //rajouter pour tirer dans la direction du joueur
 
             lastFired = time + 50;
         }}
