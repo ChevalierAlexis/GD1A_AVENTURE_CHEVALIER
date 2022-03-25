@@ -26,12 +26,12 @@ var bullets;
 var dir = "E"
 var lastFired = 0;
 var isDown = false;
-class sceneExemple extends Phaser.Scene{
-constructor(){
-super("sceneExemple");
-}
+//class sceneExemple extends Phaser.Scene{
+//constructor(){
+//super("sceneExemple");
+//}
 
- preload(){
+ function preload(){
 //images
     this.load.image('sky', 'assets/sky.png');
     this.load.image('ground', 'assets/platform.png');
@@ -40,7 +40,7 @@ super("sceneExemple");
     this.load.spritesheet('perso','assets/Tanksheet.png',
     { frameWidth: 64, frameHeight: 64 });
 }
- create(){
+ function create(){
 //
     cursors = this.input.keyboard.createCursorKeys();
 
@@ -126,7 +126,8 @@ fire: function (x, y)
             this.lifespan = 1000;
 },
 
-update: function (time, delta)
+function update: 
+function (time, delta)
 {
             this.lifespan -= delta;
 
@@ -163,7 +164,7 @@ isDown = false;
 });
 }
 
- update(time, delta){
+update(time, delta){
 //mouvements
     if (cursors.up.isDown){
             if (cursors.down.isDown) {
@@ -241,7 +242,7 @@ isDown = false;
 
             lastFired = time + 50;
         }}
-}}
+}
 
 </script>
 </body>
