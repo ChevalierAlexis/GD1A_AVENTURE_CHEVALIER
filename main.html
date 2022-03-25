@@ -11,6 +11,7 @@ src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
     var config = {
 type: Phaser.CANVAS,
 width: 1920, height: 1080,
+pixelArt: true,
 physics: {
 default: 'arcade',
 arcade: {
@@ -20,30 +21,73 @@ debug: false
 scene: {preload: preload, create: create, update: update }
 };
 new Phaser.Game(config);
+
 var bullets;
 var dir = "E"
 var lastFired = 0;
 var isDown = false;
-function preload(){
-    this.load.image('sky', 'assets/sky.png');
-this.load.image('ground', 'assets/platform.png');
-this.load.image('bullet', 'assets/bullet.png');
-
-this.load.spritesheet('perso','assets/Proto.png',
-{ frameWidth: 32, frameHeight: 48 });
+class sceneExemple extends Phaser.Scene{
+constructor(){
+super("sceneExemple");
 }
-function create(){
+
+ preload(){
+//images
+    this.load.image('sky', 'assets/sky.png');
+    this.load.image('ground', 'assets/platform.png');
+    this.load.image('bullet', 'assets/bullet.png');
+    this.load.image('sortie', 'assets/sortie.png');
+    this.load.spritesheet('perso','assets/Tanksheet.png',
+    { frameWidth: 64, frameHeight: 64 });
+}
+ create(){
+//
     cursors = this.input.keyboard.createCursorKeys();
-    platforms = this.physics.add.staticGroup();
+
     this.add.image(400, 300, 'sky');
+
+    sortie = this.physics.add.staticGroup();
+    sortie.create(1000,500, 'sortie');
+    
+    platforms = this.physics.add.staticGroup();
     platforms.create(600, 400, 'ground');
     platforms.create(400, 568, 'ground').setScale(2).refreshBody();
     platforms.create(750, 220, 'ground');
     platforms.create(50, 250, 'ground');
+
+    this.cameras.main.setBounds(0, 0, 24524, 354354);
     
     player = this.physics.add.sprite(100, 450, 'perso');
     player.setCollideWorldBounds(true);
     this.physics.add.collider(player, platforms);
+    
+    this.cameras.main.startFollow(player);
+
+//Animations
+    this.anims.create({
+        key: 'left',
+        frames: [ { key: 'perso', frame: 2 } ],
+        frameRate: 20
+    });
+
+    this.anims.create({
+        key: 'right',
+        frames: [ { key: 'perso', frame: 0 } ],
+        frameRate: 20
+    });
+
+    this.anims.create({
+        key: 'up',
+        frames: [ { key: 'perso', frame: 3 } ],
+        frameRate: 20
+    });
+
+    this.anims.create({
+        key: 'down',
+        frames: [ { key: 'perso', frame: 1 } ],
+        frameRate: 20
+    });
+//tir
     var Bullet = new Phaser.Class({
 
 Extends: Phaser.GameObjects.Image,
@@ -65,8 +109,14 @@ fire: function (x, y)
             this.setVisible(true);
 
             this.setPosition(player.x, player.y);
-
-            var angle =-90//Phaser.Math.Angle.Between(x, y, 400, 300);
+            var angle =3.1375 //Phaser.Math.Angle.Between(x, y, player.x, player.y);
+            if (dir=="O"){
+                angle=0
+            }
+            if (dir=="E"){
+                angle=3.1375
+            }
+            
 
             this.setRotation(angle);
 
@@ -98,7 +148,7 @@ maxSize: 1,
 runChildUpdate: true
 });
 
-
+//controles
 cursors = this.input.keyboard.createCursorKeys();
 
 speed = Phaser.Math.GetSpeed(300, 1);
@@ -113,7 +163,8 @@ isDown = false;
 });
 }
 
-function update(time, delta){
+ update(time, delta){
+//mouvements
     if (cursors.up.isDown){
             if (cursors.down.isDown) {
                 player.setVelocityY(0);
@@ -123,13 +174,16 @@ function update(time, delta){
                     player.setVelocityY(-200);
                     if (cursors.left.isDown){
                         dir="NO"
+                        player.anims.play('left', true);
                     }
                     if (cursors.left.isDown){
                         dir="NE"
+                        player.anims.play('right', true);
                     }
                 } else {
                     player.setVelocityY(-300);
                     dir="N"
+                    player.anims.play('up', true);
                 }
             }
         }
@@ -138,13 +192,16 @@ function update(time, delta){
                     player.setVelocityY(200);
                     if (cursors.left.isDown){
                         dir="SO"
+                        player.anims.play('left', true);
                     }
                     if (cursors.left.isDown){
                         dir="SE"
+                        player.anims.play('right', true);
                     }
                 } else {
                     player.setVelocityY(300);
                     dir="S"
+                    player.anims.play('down', true);
                 }
         }
         else {player.setVelocityY(0);}
@@ -159,6 +216,7 @@ function update(time, delta){
                 } else {
                     player.setVelocityX(-300);
                     dir="O"
+                    player.anims.play('left', true);
                 }
             }
         }
@@ -168,9 +226,11 @@ function update(time, delta){
                 } else {
                     player.setVelocityX(300);
                     dir="E"
+                    player.anims.play('right', true);
                 }
         }
         else {player.setVelocityX(0);}
+//tir 2
     if (isDown && time > lastFired)
     {
         var bullet = bullets.get();
@@ -181,7 +241,7 @@ function update(time, delta){
 
             lastFired = time + 50;
         }}
-}
+}}
 
 </script>
 </body>
