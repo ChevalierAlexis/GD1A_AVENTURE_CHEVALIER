@@ -15,8 +15,6 @@ super("sceneExemple");
 }
 
 
-
-
 preload(){
 //images
     this.load.image('sky', 'assets/sky.png');
@@ -26,14 +24,12 @@ preload(){
     this.load.spritesheet('perso','assets/Tanksheet.png',
     { frameWidth: 64, frameHeight: 64 });
     var bullets;
-var dir = "E"
-var lastFired = 0;
-var isDown = false;
+    var dir = "E";
+    var lastFired = 0;
+    var isDown = false;
 }
 create(){
 //
-    cursors = this.input.keyboard.createCursorKeys();
-
     this.add.image(400, 300, 'sky');
 
     sortie = this.physics.add.staticGroup();
@@ -164,11 +160,11 @@ update(time, delta){
                 if (player.body.velocity.x != 0) {
                     player.setVelocityY(-200);
                     if (cursors.left.isDown){
-                        dir="NO"
+                        dir="NO";
                         player.anims.play('left', true);
                     }
                     if (cursors.left.isDown){
-                        dir="NE"
+                        dir="NE";
                         player.anims.play('right', true);
                     }
                 } else {
@@ -182,16 +178,16 @@ update(time, delta){
             if (player.body.velocity.x != 0) {
                     player.setVelocityY(200);
                     if (cursors.left.isDown){
-                        dir="SO"
+                        dir="SO";
                         player.anims.play('left', true);
                     }
                     if (cursors.left.isDown){
-                        dir="SE"
+                        dir="SE";
                         player.anims.play('right', true);
                     }
                 } else {
                     player.setVelocityY(300);
-                    dir="S"
+                    dir="S";
                     player.anims.play('down', true);
                 }
         }
@@ -206,7 +202,7 @@ update(time, delta){
                     player.setVelocityX(-200);
                 } else {
                     player.setVelocityX(-300);
-                    dir="O"
+                    dir="O";
                     player.anims.play('left', true);
                 }
             }
@@ -216,7 +212,7 @@ update(time, delta){
                     player.setVelocityX(200);
                 } else {
                     player.setVelocityX(300);
-                    dir="E"
+                    dir="E";
                     player.anims.play('right', true);
                 }
         }
@@ -233,6 +229,19 @@ update(time, delta){
             lastFired = time + 50;
         }}
 }}
+var config = {
+type: Phaser.CANVAS,
+width: 1920, height: 1080,
+pixelArt: true,
+physics: {
+default: 'arcade',
+arcade: {
+debug: false
+}},
+
+scene: [sceneExemple],
+};
+new Phaser.Game(config);
 
 </script>
 
