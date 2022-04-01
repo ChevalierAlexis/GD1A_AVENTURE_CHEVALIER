@@ -21,22 +21,22 @@ debug: false
 
 scene: {preload: preload, create: create, update: update }
 
-new Phaser.Game(config);
+new Phaser.Game(config){
 //variables
-    var platforms;
-    var sortie;
-    var player;
-    var bullets;
-    var dir = "E";
-    var lastFired = 0;
-    var isDown = false;
+    var platforms,
+    var sortie,
+    var player,
+    var bullets,
+    var dir = "E",
+    var lastFired = 0,
+    var isDown = false}
 
-function preload(){
+function preload () {
 //images
-    this.load.image('sky', 'assets/sky.png');
-    this.load.image('ground', 'assets/platform.png');
-    this.load.image('bullet', 'assets/bullet.png');
-    this.load.image('sortie', 'assets/sortie.png');
+    this.load.image('sky', 'assets/sky.png'),
+    this.load.image('ground', 'assets/platform.png'),
+    this.load.image('bullet', 'assets/bullet.png'),
+    this.load.image('sortie', 'assets/sortie.png'),
     this.load.spritesheet('perso','assets/Tanksheet.png',
     { frameWidth: 64, frameHeight: 64 });
 
@@ -250,8 +250,8 @@ function update(time, delta){
 </script>
 </html>
 
-</body>
- -->
+</body> -->
+
  <!doctype html>
 <html lang="fr">
 <head>
