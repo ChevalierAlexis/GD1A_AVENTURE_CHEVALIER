@@ -9,7 +9,8 @@ src="//cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.js"></script>
 </head>
 <body>
 <script type="text/javascript">
-    class sceneExemple extends Phaser.Scene{
+
+class sceneExemple extends Phaser.Scene{
 constructor(){
 super("sceneExemple");
 }
@@ -17,6 +18,8 @@ super("sceneExemple");
 
 preload(){
 //images
+    this.load.image('tuiles','assets/block.png');
+    this.load.tilemapTiledJSON('map','map.json');
     this.load.image('sky', 'assets/sky.png');
     this.load.image('ground', 'assets/platform.png');
     this.load.image('bullet', 'assets/bullet.png');
@@ -27,13 +30,24 @@ preload(){
 }
 create(){
 //  
+
+const carte = this.add.tilemap("map");
+    const tileset = carte.addTilesetImage(
+        "block",
+        "tuiles"
+    );
+    const calque1 = carte.createLayer(
+        "Calque de Tuiles 1",
+        tileset
+    );
+
     this.add.image(400, 300, 'sky');
 
     this.sortie = this.physics.add.staticGroup();
     this.sortie.create(1000,500, 'sortie');
     
     
-
+    
 
     this.dir = "E";
 /* 
@@ -202,7 +216,7 @@ update : function (time, delta)
 });
 
 this.bullets = this.add.group({
-classType: Bullet,
+classType: this.Bullet,
 maxSize: 1,
 runChildUpdate: true
 });

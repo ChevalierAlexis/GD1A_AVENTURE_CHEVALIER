@@ -451,7 +451,7 @@ function update(time, delta){
             }
             else {
                 if (player.body.velocity.x != 0) {
-                    player.setVelocityY(-200);
+                    player.setVelocityY(-150);
                     if (cursors.left.isDown){
                         dir="NO"
                         player.anims.play('dleft', true);
@@ -461,7 +461,7 @@ function update(time, delta){
                         player.anims.play('dright', true);
                     }
                 } else {
-                    player.setVelocityY(-300);
+                    player.setVelocityY(-200);
                     dir="N"
                     player.anims.play('dup', true);
                 }
@@ -469,7 +469,7 @@ function update(time, delta){
         }
         else if (cursors.down.isDown){
             if (player.body.velocity.x != 0) {
-                    player.setVelocityY(200);
+                    player.setVelocityY(150);
                     if (cursors.left.isDown){
                         dir="SO"
                         player.anims.play('dleft', true);
@@ -479,7 +479,7 @@ function update(time, delta){
                         player.anims.play('dright', true);
                     }
                 } else {
-                    player.setVelocityY(300);
+                    player.setVelocityY(200);
                     dir="S"
                     player.anims.play('ddown', true);
                 }
@@ -492,9 +492,9 @@ function update(time, delta){
             }
             else {
                 if (player.body.velocity.y != 0) {
-                    player.setVelocityX(-200);
+                    player.setVelocityX(-150);
                 } else {
-                    player.setVelocityX(-300);
+                    player.setVelocityX(-200);
                     dir="O"
                     player.anims.play('dleft', true);
                 }
@@ -502,9 +502,9 @@ function update(time, delta){
         }
         else if (cursors.right.isDown){
             if (player.body.velocity.y != 0) {
-                    player.setVelocityX(200);
+                    player.setVelocityX(150);
                 } else {
-                    player.setVelocityX(300);
+                    player.setVelocityX(200);
                     dir="E"
                     player.anims.play('dright', true);
                 }
