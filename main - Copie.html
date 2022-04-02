@@ -122,7 +122,7 @@ this.anims.create({
         this.scene.start("scene2");
     }
 //tir
-    var Bullet = new Phaser.Class({
+    this.Bullet = new Phaser.Class({
 
 Extends: Phaser.GameObjects.Image,
 
@@ -143,14 +143,38 @@ fire: function (x, y)
             this.setVisible(true);
 
             this.setPosition(this.player.x, this.player.y);
-            var angle =3.1375 //Phaser.Math.Angle.Between(x, y, player.x, player.y);
+            this.angle =3.1375 //Phaser.Math.Angle.Between(x, y, player.x, player.y);
             if (this.dir=="O"){
-                angle=0
-            }
-            if (this.dir=="E"){
-                angle=3.1375
+                this.angle=0
             }
             
+            if (this.dir=="E"){
+                this.angle=3.1375
+            }
+            
+            if (this.dir=="N"){
+                this.angle=1,56875
+            }
+            
+            if (this.dir=="S"){
+                this.angle=4,70625
+            }
+
+            if (this.dir=="NO"){
+                this.angle=0,784375
+            }
+
+            if (this.dir=="NE"){
+                this.angle=2,353125
+            }
+
+            if (this.dir=="SO"){
+                this.angle=5,490625
+            }
+
+            if (this.dir=="SE"){
+                this.angle=3,921875
+            }
 
             this.setRotation(angle);
 
@@ -161,7 +185,7 @@ fire: function (x, y)
 },
 
 
-function (time, delta)
+update : function (time, delta)
 {
             this.lifespan -= delta;
 
