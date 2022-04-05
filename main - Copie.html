@@ -136,7 +136,7 @@ this.anims.create({
         this.scene.start("scene2");
     }
 //tir
-    this.Bullet = new Phaser.Class({
+this.Bullet = new Phaser.Class({
 
 Extends: Phaser.GameObjects.Image,
 
@@ -221,6 +221,24 @@ maxSize: 1,
 runChildUpdate: true
 });
 
+//ennemi
+this.Ennemi = new Phaser.Class({
+    Extends: Phaser.GameObjects.Image,
+
+initialize:
+function attaque(x,y){
+
+}
+function detruit (){
+    this.setActive(false);
+    this.setVisible(false);
+}
+})
+
+
+
+
+
 //controles
 this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -239,10 +257,10 @@ this.isDown = false;
 update(time, delta){
 //mouvements
     if (this.cursors.up.isDown){
-            if (this.cursors.down.isDown) {
-                this.player.setVelocityY(0);
-            }
-            else {
+            // if (this.cursors.down.isDown) {
+            //     this.player.setVelocityY(0);
+            // }
+            //else {
                 if (this.player.body.velocity.x != 0) {
                     this.player.setVelocityY(-200);
                     if (this.cursors.left.isDown){
@@ -253,12 +271,14 @@ update(time, delta){
                         this.dir="NE";
                         this.player.anims.play('dright', true);
                     }
-                } else {
+                } 
+                else {
                     this.player.setVelocityY(-300);
-                    this.dir="N"
+                    console.log(this.player.body.velocity.y);
+                    this.dir="N";
                     this.player.anims.play('dup', true);
                 }
-            }
+            //}
         }
         else if (this.cursors.down.isDown){
             if (this.player.body.velocity.x != 0) {
@@ -277,7 +297,7 @@ update(time, delta){
                     this.player.anims.play('ddown', true);
                 }
         }
-        else {this.player.setVelocityY(0);}
+        //else {this.player.setVelocityY(0);}
       
         if (this.cursors.left.isDown){
             if (this.cursors.right.isDown) {
@@ -302,7 +322,7 @@ update(time, delta){
                     this.player.anims.play('dright', true);
                 }
         }
-        else if(this.player.setVelocityX(0)&&this.player.setVelocityY(0))
+        else if(this.player.setVelocityX(0) && this.player.setVelocityY(0))
         {
             if (this.dir="O") {this.player.anims.play('left', true);}
             if (this.dir="E") {this.player.anims.play('right', true);}
@@ -311,7 +331,8 @@ update(time, delta){
             if (this.dir="SE") {this.player.anims.play('right', true);}
             if (this.dir="SO") {this.player.anims.play('left', true);}
             if (this.dir="NE") {this.player.anims.play('right', true);}
-            if (this.dir="NO") {this.player.anims.play('left', true);}}
+            if (this.dir="NO") {this.player.anims.play('left', true);}
+        }
 //tir 2
     if (this.isDown && time > lastFired)
     {
@@ -371,7 +392,7 @@ update(){}
 }
 var config = {
 type: Phaser.CANVAS,
-width: 10000, height: 10000,
+width: 6400, height: 12800,
 pixelArt: true,
 physics: {
 default: 'arcade',
