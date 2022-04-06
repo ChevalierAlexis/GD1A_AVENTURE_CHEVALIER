@@ -289,86 +289,115 @@
                 //mouvements
                 if (this.cursors.up.isDown) {
                     this.player.setVelocityY(-200);
-                    console.log(this.player.body.velocity.y);
                     this.dir = "N";
-                    this.player.anims.play('dup', true);
-                    // if (this.cursors.down.isDown) {
-                    //     this.player.setVelocityY(0);
-                    // }
-                    //else {
-                    if (this.player.body.velocity.x != 0) {
-                        this.player.setVelocityY(-150);
-                        if (this.cursors.left.isDown) {
-                            this.dir = "NO";
-                            this.player.anims.play('dleft', true);
-                        }
-                        if (this.cursors.right.isDown) {
-                            this.dir = "NE";
-                            this.player.anims.play('dright', true);
-                        }
-                    }
-                    // else {
-                    //     this.player.setVelocityY(-200);
-                    //     console.log(this.player.body.velocity.y);
-                    //     this.dir="N";
-                    //     this.player.anims.play('dup', true);
-                    // }
-                    //}
-                }
-                if (this.cursors.down.isDown) {
-                    if (this.player.body.velocity.x != 0) {
-                        this.player.setVelocityY(150);
-                        if (this.cursors.left.isDown) {
-                            this.dir = "SO";
-                            this.player.anims.play('dleft', true);
-                        }
-                        if (this.cursors.right.isDown) {
-                            this.dir = "SE";
-                            this.player.anims.play('dright', true);
-                        }
-                    } else {
-                        this.player.setVelocityY(200);
-                        this.dir = "S";
-                        this.player.anims.play('ddown', true);
-                    }
-                }
+                    this.player.anims.play('dup', true);}
 
-                if (this.cursors.left.isDown) {
-                    if (this.cursors.right.isDown) {
-                        this.player.setVelocityX(0);
-                    }
-                    else {
-                        if (this.player.body.velocity.y != 0) {
-                            this.player.setVelocityX(-150);
-                        } else {
-                            this.player.setVelocityX(-200);
-                            this.dir = "O";
-                            this.player.anims.play('dleft', true);
-                        }
-                    }
-                }
+                else if (this.cursors.down.isDown) {
+                    this.player.setVelocityY(200);
+                    this.dir = "S";
+                    this.player.anims.play('ddown', true);}
+
+                else if (this.cursors.left.isDown) {
+                    this.player.setVelocityX(-200);
+                    this.dir = "O";
+                    this.player.anims.play('dleft', true);}
+
                 else if (this.cursors.right.isDown) {
-                    if (this.player.body.velocity.y != 0) {
-                        this.player.setVelocityX(150);
-                    } else {
-                        this.player.setVelocityX(200);
-                        this.dir = "E";
-                        this.player.anims.play('dright', true);
-                    }
-                }
-                else //if (this.player.setVelocityX(0) && this.player.setVelocityY(0))
-                {
+                    this.player.setVelocityX(200);
+                    this.dir = "E";
+                    this.player.anims.play('dright', true);}
+                
+                else {
                     this.player.setVelocityY(0);
                     this.player.setVelocityX(0);
+                    console.log(this.dir)
                     if (this.dir = "O") { this.player.anims.play('left', true); }
                     if (this.dir = "E") { this.player.anims.play('right', true); }
                     if (this.dir = "S") { this.player.anims.play('down', true); }
                     if (this.dir = "N") { this.player.anims.play('up', true); }
-                    if (this.dir = "SE") { this.player.anims.play('right', true); }
-                    if (this.dir = "SO") { this.player.anims.play('left', true); }
-                    if (this.dir = "NE") { this.player.anims.play('right', true); }
-                    if (this.dir = "NO") { this.player.anims.play('left', true); }
                 }
+                // if (this.cursors.up.isDown) {
+                //     this.player.setVelocityY(-200);
+                //     console.log(this.player.body.velocity.y);
+                //     this.dir = "N";
+                //     this.player.anims.play('dup', true);
+                //     // if (this.cursors.down.isDown) {
+                //     //     this.player.setVelocityY(0);
+                //     // }
+                //     //else {
+                //     if (this.player.body.velocity.x != 0) {
+                //         this.player.setVelocityY(-150);
+                //         if (this.cursors.left.isDown) {
+                //             this.dir = "NO";
+                //             this.player.anims.play('dleft', true);
+                //         }
+                //         if (this.cursors.right.isDown) {
+                //             this.dir = "NE";
+                //             this.player.anims.play('dright', true);
+                //         }
+                //     }
+                //     // else {
+                //     //     this.player.setVelocityY(-200);
+                //     //     console.log(this.player.body.velocity.y);
+                //     //     this.dir="N";
+                //     //     this.player.anims.play('dup', true);
+                //     // }
+                //     //}
+                // }
+                // if (this.cursors.down.isDown) {
+                //     if (this.player.body.velocity.x != 0) {
+                //         this.player.setVelocityY(150);
+                //         if (this.cursors.left.isDown) {
+                //             this.dir = "SO";
+                //             this.player.anims.play('dleft', true);
+                //         }
+                //         if (this.cursors.right.isDown) {
+                //             this.dir = "SE";
+                //             this.player.anims.play('dright', true);
+                //         }
+                //     } else {
+                //         this.player.setVelocityY(200);
+                //         this.dir = "S";
+                //         this.player.anims.play('ddown', true);
+                //     }
+                // }
+
+                // if (this.cursors.left.isDown) {
+                //     if (this.cursors.right.isDown) {
+                //         this.player.setVelocityX(0);
+                //     }
+                //     else {
+                //         if (this.player.body.velocity.y != 0) {
+                //             this.player.setVelocityX(-150);
+                //         } else {
+                //             this.player.setVelocityX(-200);
+                //             this.dir = "O";
+                //             this.player.anims.play('dleft', true);
+                //         }
+                //     }
+                // }
+                // else if (this.cursors.right.isDown) {
+                //     if (this.player.body.velocity.y != 0) {
+                //         this.player.setVelocityX(150);
+                //     } else {
+                //         this.player.setVelocityX(200);
+                //         this.dir = "E";
+                //         this.player.anims.play('dright', true);
+                //     }
+                // }
+                // else //if (this.player.setVelocityX(0) && this.player.setVelocityY(0))
+                // {
+                //     this.player.setVelocityY(0);
+                //     this.player.setVelocityX(0);
+                //     if (this.dir = "O") { this.player.anims.play('left', true); }
+                //     if (this.dir = "E") { this.player.anims.play('right', true); }
+                //     if (this.dir = "S") { this.player.anims.play('down', true); }
+                //     if (this.dir = "N") { this.player.anims.play('up', true); }
+                //     if (this.dir = "SE") { this.player.anims.play('right', true); }
+                //     if (this.dir = "SO") { this.player.anims.play('left', true); }
+                //     if (this.dir = "NE") { this.player.anims.play('right', true); }
+                //     if (this.dir = "NO") { this.player.anims.play('left', true); }
+                
                 //tir 2
                 if (this.isDown == true && time > lastFired) {
                     this.bullet = this.bullets.get();
