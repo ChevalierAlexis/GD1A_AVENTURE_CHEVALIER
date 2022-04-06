@@ -257,7 +257,7 @@ function update(time, delta){
 <head>
 <meta charset="UTF-8" /><title>Zelda-Like</title>
 <script
-src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
+src="//cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.js"></script>
 <style type="text/css"> body { margin: 0; }</style>
 </head>
 <body>
@@ -396,6 +396,23 @@ fire: function (x, y)
             if (dir=="E"){
                 angle=3.1375
             }
+
+            this.setRotation(angle);
+
+            this.incX = Math.cos(angle);
+            this.incY = Math.sin(angle);
+
+            this.lifespan = 1000;
+},
+
+fireEnnemi: function (x, y)
+{            this.setActive(true);
+            this.setVisible(true);
+
+            this.setPosition(Ennemi.x, Ennemi.y);
+
+            var angle =3.1375 //Phaser.Math.Angle.Between(x, y, player.x, player.y);
+            
 
             this.setRotation(angle);
 
