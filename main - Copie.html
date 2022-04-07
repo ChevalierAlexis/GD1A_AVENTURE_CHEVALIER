@@ -32,9 +32,16 @@
                 this.load.image('sortie', 'assets/sortie.png');
                 this.load.spritesheet('perso', 'assets/Ennemisprite1.png',
                     { frameWidth: 64, frameHeight: 64 });
+                this.load.spritesheet('tank', 'assets/Ennemisprite1.png',
+                    { frameWidth: 64, frameHeight: 64 });
 
             }
             create() {
+                //variables
+                this.dir = "E";
+                this.bullets;
+                this.lastFired = 0;
+                this.isDown = false;
                 // importation Tiled
                 //tir
                 this.Bullet = new Phaser.Class({
@@ -98,20 +105,20 @@
                         this.lifespan = 1000;
                     },
 
-                    fireEnnemi: function (x, y) {
-                        this.setActive(true);
-                        this.setVisible(true);
+                    // fireEnnemi: function (x, y) {
+                    //     this.setActive(true);
+                    //     this.setVisible(true);
 
-                        this.setPosition(this.Ennemi.x, this.Ennemi.y);
-                        this.angle = Phaser.Math.Angle.Between(x, y, player.x, player.y);
+                    //     this.setPosition(this.Ennemi.x, this.Ennemi.y);
+                    //     this.angle = Phaser.Math.Angle.Between(x, y, player.x, player.y);
 
-                        this.setRotation(angle);
+                    //     this.setRotation(angle);
 
-                        this.incX = Math.cos(angle);
-                        this.incY = Math.sin(angle);
+                    //     this.incX = Math.cos(angle);
+                    //     this.incY = Math.sin(angle);
 
-                        this.lifespan = 1000;
-                    },
+                    //     this.lifespan = 1000;
+                    // },
 
 
                     update: function (time, delta) {
@@ -134,32 +141,58 @@
                     runChildUpdate: true
                     });
 
-                    //ennemi
-                this.Ennemi = new Phaser.Class({
-                    Extends: Phaser.GameObjects.Image,
+    //ennemi
+                // this.Ennemi = new Phaser.Class({
+                    
+                //     initialize:
+                //         function Ennemi(pve,sx,sy) {
+                //             this.physics.add.sprite(sx,sy,'ennemi');
+                //             this.anims.play('left');
 
-                    initialize:
-                        function Ennemi(pve) {
+                //         },
+                //     // attaque: function (x, y) {
+                //     //     this.bullet.fireEnnemi(this.player.x, this.player.y)
+                //     // },
 
-                        },
-                    attaque: function (x, y) {
-                        this.bullet.fireEnnemi(this.player.x, this.player.y)
-                    },
+                //     // perdpv: function () {
+                //     //     pve = pve - 5
+                //     //     if (pve <= 0) {
+                //     //         this.detruit()
+                //     //     }
+                //     // },
 
-                    perdpv: function () {
-                        pve = pve - 5
-                        if (pve <= 0) {
-                            this.detruit()
-                        }
-                    },
+                //     // detruit: function () {
+                //     //     this.setActive(false);
+                //     //     this.setVisible(false);
+                //     // },
+                //     preload: function (time,delta){
+                        
+                //     },
+                //     update: function () {
+                //     }
+                //     })
 
-                    detruit: function () {
-                        this.setActive(false);
-                        this.setVisible(false);
-                    },
-                    update: function () {
-                    }
-                    })
+                
+                this.add.image(400, 300, 'sky');
+
+                this.sortie = this.physics.add.staticGroup();
+                this.sortie.create(3000, 500, 'sortie');
+
+
+                //plateformes
+                this.platforms = this.physics.add.staticGroup();
+                this.platforms.create(600, 400, 'ground');
+                this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
+                this.platforms.create(750, 220, 'ground');
+                this.platforms.create(50, 250, 'ground');
+
+                //ennemi
+                this.ennemis = this.physics.add.group({
+                    key: 'ennemi',
+
+                });
+
+
                 const carte = this.add.tilemap("map");
                 const tileset = carte.addTilesetImage(
                     "block",
@@ -169,44 +202,23 @@
                     "Calque de Tuiles 1",
                     tileset
                 );
-                const mapEnnemis = carte.getObjectLayer('Ennemis');
-                mapEnnemis.objects.forEach(enObj =>{
-                this.Ennemi.get(enObj.x,enObj.y,'perso')
-                })
+                carte.getObjectLayer("Ennemis").objects.forEach((ennemis)=>{
+                    const ennemiSprite = this.ennemis.create(200,3000,'tank').setOrigin(0);
+                });
 
-                this.add.image(400, 300, 'sky');
-
-                this.sortie = this.physics.add.staticGroup();
-                this.sortie.create(3000, 500, 'sortie');
-
-                //variables
-                this.dir = "E";
-                this.bullets;
-                this.lastFired = 0;
-                this.isDown = false;
-
-                //plateformes
-                this.platforms = this.physics.add.staticGroup();
-                this.platforms.create(600, 400, 'ground');
-                this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
-                this.platforms.create(750, 220, 'ground');
-                this.platforms.create(50, 250, 'ground');
+                
 
                 //joueur, ennemis et cam
                 this.physics.world.setBounds(0,0,6400,12800)
                 this.cameras.main.setBounds(0, 0, 24524, 354354);
 
-                this.player = this.physics.add.sprite(100, 1000, 'perso');
+                this.player = this.physics.add.sprite(100, 3000, 'perso');
                 this.player.setCollideWorldBounds(true);
                 this.physics.add.collider(this.player, this.platforms);
 
                 this.cameras.main.startFollow(this.player);
 
                 this.physics.add.overlap(this.player, this.sortie, sortir, null, this);
-                const ennemis = this.physics.add.group({
-                    classType : this.Ennemi
-                })
-                ennemis.get(550,50,'perso',true);
                 //this.physics.add.overlap(this.Ennemi, this.Bullet, this.Ennemi.perdpv);
 
                 //Animations
