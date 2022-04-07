@@ -169,6 +169,10 @@
                     "Calque de Tuiles 1",
                     tileset
                 );
+                const mapEnnemis = carte.getObjectLayer('Ennemis');
+                mapEnnemis.objects.forEach(enObj =>{
+                this.Ennemi.get(enObj.x,enObj.y,'perso')
+                })
 
                 this.add.image(400, 300, 'sky');
 
