@@ -67,35 +67,35 @@
                         this.setPosition(this.scene.player.x, this.scene.player.y);
                         this.angle = 3.1375 //Phaser.Math.Angle.Between(x, y, player.x, player.y);
                         if (this.dir == "O") {
-                            this.scene.angle = 0
+                            this.scene.angle = 90//0
                         }
 
                         if (this.dir == "E") {
-                            this.scene.angle = 3.1375
+                            this.scene.angle = 180//3.1375
                         }
 
                         if (this.dir == "N") {
-                            this.scene.angle = 1, 56875
+                            this.scene.angle = 135//1, 56875
                         }
 
                         if (this.dir == "S") {
-                            this.scene.angle = 4, 70625
+                            this.scene.angle = 45//4, 70625
                         }
 
                         if (this.dir == "NO") {
-                            this.scene.angle = 0, 784375
+                            this.scene.angle = 58//0, 784375
                         }
 
                         if (this.dir == "NE") {
-                            this.scene.angle = 2, 353125
+                            this.scene.angle = 68//2, 353125
                         }
 
                         if (this.dir == "SO") {
-                            this.scene.angle = 5, 490625
+                            this.scene.angle = 75//5, 490625
                         }
 
                         if (this.dir == "SE") {
-                            this.scene.angle = 3, 921875
+                            this.scene.angle = 85//3, 921875
                         }
 
                         this.setRotation(this.scene.angle);
@@ -342,11 +342,13 @@
                 
                 else {
                     this.player.setVelocity(0,0);
-                    console.log(this.dir)
-                    if (this.dir = "O") { this.player.anims.play('left', true); }
-                    if (this.dir = "E") { this.player.anims.play('right', true); }
-                    if (this.dir = "N") { this.player.anims.play('up', true); }
-                    if (this.dir = "S") { this.player.anims.play('down', true); }
+                    console.log(this.dir);
+                    this.player.anims.currentAnim;
+                    // if (this.dir = "O") { this.player.anims.play('left', true); }
+                    // else if (this.dir = "E") { this.player.anims.play('right', true); }
+                    // else if (this.dir = "N") { this.player.anims.play('up', true); }
+                    // else if (this.dir = "S") { this.player.anims.play('down', true); }
+                    
                     
                 }
                 // if (this.cursors.up.isDown) {
