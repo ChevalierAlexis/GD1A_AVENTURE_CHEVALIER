@@ -41,7 +41,7 @@
                 this.dir = "E";
                 this.bullets;
                 this.lastFired = 0;
-                this.isDown = false;
+                this.isdown = false;
                 // importation Tiled
                 //tir
                 this.Bullet = new Phaser.Class({
@@ -64,44 +64,44 @@
                         this.setActive(true);
                         this.setVisible(true);
 
-                        this.setPosition(this.player.x, this.player.y);
+                        this.setPosition(this.scene.player.x, this.scene.player.y);
                         this.angle = 3.1375 //Phaser.Math.Angle.Between(x, y, player.x, player.y);
                         if (this.dir == "O") {
-                            this.angle = 0
+                            this.scene.angle = 0
                         }
 
                         if (this.dir == "E") {
-                            this.angle = 3.1375
+                            this.scene.angle = 3.1375
                         }
 
                         if (this.dir == "N") {
-                            this.angle = 1, 56875
+                            this.scene.angle = 1, 56875
                         }
 
                         if (this.dir == "S") {
-                            this.angle = 4, 70625
+                            this.scene.angle = 4, 70625
                         }
 
                         if (this.dir == "NO") {
-                            this.angle = 0, 784375
+                            this.scene.angle = 0, 784375
                         }
 
                         if (this.dir == "NE") {
-                            this.angle = 2, 353125
+                            this.scene.angle = 2, 353125
                         }
 
                         if (this.dir == "SO") {
-                            this.angle = 5, 490625
+                            this.scene.angle = 5, 490625
                         }
 
                         if (this.dir == "SE") {
-                            this.angle = 3, 921875
+                            this.scene.angle = 3, 921875
                         }
 
-                        this.setRotation(angle);
+                        this.setRotation(this.scene.angle);
 
-                        this.incX = Math.cos(angle);
-                        this.incY = Math.sin(angle);
+                        this.incX = Math.cos(this.scene.angle);
+                        this.incY = Math.sin(this.scene.angle);
 
                         this.lifespan = 1000;
                     },
@@ -179,7 +179,7 @@
                 this.sortie = this.physics.add.staticGroup();
                 this.sortie.create(3000, 500, 'sortie');
 
-
+                
                 //plateformes
                 this.platforms = this.physics.add.staticGroup();
                 this.platforms.create(600, 400, 'ground');
@@ -215,8 +215,8 @@
                 
 
                 //joueur, ennemis et cam
-                this.physics.world.setBounds(0,0,6400,12800)
-                this.cameras.main.setBounds(0, 0, 24524, 354354);
+                this.physics.world.setBounds(0,2460,4050,5000)
+                this.cameras.main.setBounds(0, 2460, 4050, 3880);
 
                 this.player = this.physics.add.sprite(100, 3000, 'perso');
                 this.player.setCollideWorldBounds(true);
@@ -227,6 +227,7 @@
 
                 this.physics.add.overlap(this.player, this.sortie, sortir, null, this);
                 this.physics.add.overlap(this.ennemis, this.Bullet, this.ennemis.perdpv);
+
 
                 //Animations
                 this.anims.create({
@@ -307,12 +308,14 @@
                 this.speed = Phaser.Math.GetSpeed(300, 1);
 
                 this.input.on('pointerdown', function (pointer) {
+                    this.scene.isdown = true;
+                    
+                    console.log (this.isdown);
 
-                    this.isDown = true;
                 });
                 this.input.on('pointerup', function (pointer) {
 
-                    this.isDown = false;
+                    this.isdown = false;
                 });
             }
 
@@ -334,7 +337,7 @@
                     this.player.anims.play('dleft', true);}
 
                 else if (this.cursors.right.isDown) {
-                    this.player.setVelocityX(200);
+                    this.player.setVelocityX(1000);
                     this.dir = "E";
                     this.player.anims.play('dright', true);}
                 
@@ -430,13 +433,17 @@
                 //     if (this.dir = "NO") { this.player.anims.play('left', true); }
                 
                 //tir 2
-                if (this.isDown == true && time > lastFired) {
+                console.log(this.player.x)
+                console.log(this.player.y)
+                if (this.isdown == true && time > this.lastFired) {
+                    console.log("tir2");
                     this.bullet = this.bullets.get();
-                    this.consol.log("try");
+                   
                     if (this.bullet) {
-                        this.bullet.fire(this.player.x, this.player.y);               //rajouter pour tirer dans la direction du joueur
-                        consol.log(this.isDown);
-                        lastFired = time + 50;
+                        console.log("truc");
+                        this.bullet.fire(this.player.x, this.player.y);
+                        
+                        this.lastFired = time + 50;
                     }
                 }
             }
