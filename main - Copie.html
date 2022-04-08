@@ -55,7 +55,7 @@
                             this.incX = 0;
                             this.incY = 0;
                             this.lifespan = 0;
-                            this.speed = Phaser.Math.GetSpeed(400, 1);
+                            this.speed = Phaser.Math.GetSpeed(100, 1);
                         },
 
 
@@ -124,16 +124,14 @@
 
                     update: function (time, delta) {
                         this.lifespan -= delta;
-
-                        this.x -= this.incX * (this.speed * delta);
-                        this.y -= this.incY * (this.speed * delta);
+                        this.x -=  (this.speed * delta); //this.incX *
+                        this.y -=  (this.speed * delta);//this.incY *
 
                         if (this.lifespan <= 0) {
                             this.setActive(false);
                             this.setVisible(false);
                         }
                     }
-
                     });
 
                     this.bullets = this.add.group({
@@ -304,18 +302,19 @@
 
                 //controles
                 this.cursors = this.input.keyboard.createCursorKeys();
+                
 
                 this.speed = Phaser.Math.GetSpeed(300, 1);
 
                 this.input.on('pointerdown', function (pointer) {
                     this.scene.isdown = true;
                     
-                    console.log (this.isdown);
+                    
 
                 });
                 this.input.on('pointerup', function (pointer) {
 
-                    this.isdown = false;
+                    this.scene.isdown = false;
                 });
             }
 
@@ -337,18 +336,18 @@
                     this.player.anims.play('dleft', true);}
 
                 else if (this.cursors.right.isDown) {
-                    this.player.setVelocityX(1000);
+                    this.player.setVelocityX(200);
                     this.dir = "E";
                     this.player.anims.play('dright', true);}
                 
                 else {
-                    this.player.setVelocityY(0);
-                    this.player.setVelocityX(0);
+                    this.player.setVelocity(0,0);
                     console.log(this.dir)
                     if (this.dir = "O") { this.player.anims.play('left', true); }
                     if (this.dir = "E") { this.player.anims.play('right', true); }
-                    if (this.dir = "S") { this.player.anims.play('down', true); }
                     if (this.dir = "N") { this.player.anims.play('up', true); }
+                    if (this.dir = "S") { this.player.anims.play('down', true); }
+                    
                 }
                 // if (this.cursors.up.isDown) {
                 //     this.player.setVelocityY(-200);
@@ -433,19 +432,20 @@
                 //     if (this.dir = "NO") { this.player.anims.play('left', true); }
                 
                 //tir 2
-                console.log(this.player.x)
-                console.log(this.player.y)
+                
+                // console.log(this.player.x)
+                // console.log(this.player.y)
                 if (this.isdown == true && time > this.lastFired) {
-                    console.log("tir2");
                     this.bullet = this.bullets.get();
                    
                     if (this.bullet) {
-                        console.log("truc");
+                        console.log("truc",this.bullet);
                         this.bullet.fire(this.player.x, this.player.y);
                         
                         this.lastFired = time + 50;
                     }
                 }
+                
             }
         }
 
