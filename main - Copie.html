@@ -60,6 +60,7 @@
 
 
                     fire: function (x, y) {
+
                         this.setActive(true);
                         this.setVisible(true);
 
@@ -141,36 +142,36 @@
                     runChildUpdate: true
                     });
 
-    //ennemi
-                // this.Ennemi = new Phaser.Class({
+    // //ennemi
+    //             this.Ennemi = new Phaser.Class({
                     
-                //     initialize:
-                //         function Ennemi(pve,sx,sy) {
-                //             this.physics.add.sprite(sx,sy,'ennemi');
-                //             this.anims.play('left');
+    //                 initialize:
+    //                     function Ennemi(pve,sx,sy) {
+    //                         this.physics.add.sprite(sx,sy,'ennemi');
+    //                         this.anims.play('left');
 
-                //         },
-                //     // attaque: function (x, y) {
-                //     //     this.bullet.fireEnnemi(this.player.x, this.player.y)
-                //     // },
+    //                     },
+    //                 // attaque: function (x, y) {
+    //                 //     this.bullet.fireEnnemi(this.player.x, this.player.y)
+    //                 // },
 
-                //     // perdpv: function () {
-                //     //     pve = pve - 5
-                //     //     if (pve <= 0) {
-                //     //         this.detruit()
-                //     //     }
-                //     // },
+    //                 // perdpv: function () {
+    //                 //     pve = pve - 5
+    //                 //     if (pve <= 0) {
+    //                 //         this.detruit()
+    //                 //     }
+    //                 // },
 
-                //     // detruit: function () {
-                //     //     this.setActive(false);
-                //     //     this.setVisible(false);
-                //     // },
-                //     preload: function (time,delta){
+    //                 // detruit: function () {
+    //                 //     this.setActive(false);
+    //                 //     this.setVisible(false);
+    //                 // },
+    //                 preload: function (time,delta){
                         
-                //     },
-                //     update: function () {
-                //     }
-                //     })
+    //                 },
+    //                 update: function () {
+    //                 }
+    //                 })
 
                 
                 this.add.image(400, 300, 'sky');
@@ -187,9 +188,10 @@
                 this.platforms.create(50, 250, 'ground');
 
                 //ennemi
+
                 this.ennemis = this.physics.add.group({
                     key: 'ennemi',
-
+                    
                 });
 
 
@@ -203,8 +205,12 @@
                     tileset
                 );
                 carte.getObjectLayer("Ennemis").objects.forEach((ennemis)=>{
-                    const ennemiSprite = this.ennemis.create(200,3000,'tank').setOrigin(0);
+                    const ennemiSprite = this.ennemis.create(ennemis.x,ennemis.y-ennemis.height,'tank').setOrigin(0);
                 });
+                // const mapEnnemis = carte.getObjectLayer('Ennemis');
+                // mapEnnemis.objects.forEach(enObj =>{
+                // this.Ennemi.get(50,50,50);
+                // })
 
                 
 
@@ -217,9 +223,10 @@
                 this.physics.add.collider(this.player, this.platforms);
 
                 this.cameras.main.startFollow(this.player);
+                this.cameras.main.setZoom(2)
 
                 this.physics.add.overlap(this.player, this.sortie, sortir, null, this);
-                //this.physics.add.overlap(this.Ennemi, this.Bullet, this.Ennemi.perdpv);
+                this.physics.add.overlap(this.ennemis, this.Bullet, this.ennemis.perdpv);
 
                 //Animations
                 this.anims.create({
@@ -284,7 +291,11 @@
                     this.scene.start("scene2");
                 }
 
-                
+                function perdpv () {
+                    pve = pve - 5
+                    if (pve <= 0) {
+                    this.detruit()
+                    }}
 
 
 
@@ -421,10 +432,10 @@
                 //tir 2
                 if (this.isDown == true && time > lastFired) {
                     this.bullet = this.bullets.get();
-
+                    this.consol.log("try");
                     if (this.bullet) {
                         this.bullet.fire(this.player.x, this.player.y);               //rajouter pour tirer dans la direction du joueur
-
+                        consol.log(this.isDown);
                         lastFired = time + 50;
                     }
                 }
