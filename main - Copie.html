@@ -34,6 +34,8 @@
                     { frameWidth: 64, frameHeight: 64 });
                 this.load.spritesheet('tank', 'assets/Ennemisprite1.png',
                     { frameWidth: 64, frameHeight: 64 });
+                this.load.spritesheet('vie', 'assets/vie.png',
+                { frameWidth: 32, frameHeight: 32 });
 
             }
             create() {
@@ -42,9 +44,9 @@
                 this.bullets;
                 this.lastFired = 0;
                 this.isdown = false;
-                // importation Tiled
+                
                 //tir
-                this.Bullet = new Phaser.Class({
+                var Bullet = new Phaser.Class({      //Abandonner et revenir sur la version avec les angles wtf
 
                     Extends: Phaser.GameObjects.Image,
 
@@ -55,7 +57,7 @@
                             this.incX = 0;
                             this.incY = 0;
                             this.lifespan = 0;
-                            this.speed = Phaser.Math.GetSpeed(100, 1);
+                            this.speed = Phaser.Math.GetSpeed(600, 1);
                         },
 
 
@@ -65,7 +67,7 @@
                         this.setVisible(true);
 
                         this.setPosition(player.x, player.y);
-                        this.scene.angle = Phaser.Math.Angle.Between(x, y,100, 3000 );
+                        var angle = Phaser.Math.Angle.Between(x, y, player.x, player.y );
                         // if (this.dir == "O") {
                         //     this.scene.angle = 90//0
                         // }
@@ -98,10 +100,10 @@
                         //     this.scene.angle = 85//3, 921875
                         // }
 
-                        this.setRotation(this.scene.angle);
+                        this.setRotation(angle);
 
-                        this.incX = Math.cos(this.scene.angle);
-                        this.incY = Math.sin(this.scene.angle);
+                        this.incX = Math.cos(angle);
+                        this.incY = Math.sin(angle);
 
                         this.lifespan = 1000;
                     },
@@ -135,7 +137,7 @@
                     });
 
                     this.bullets = this.add.group({
-                    classType: this.Bullet,
+                    classType: Bullet,
                     maxSize: 1,
                     runChildUpdate: true
                     });
@@ -192,7 +194,7 @@
                     
                 });
 
-
+                // importation Tiled
                 const carte = this.add.tilemap("map");
                 const tileset = carte.addTilesetImage(
                     "block",
@@ -205,10 +207,10 @@
                 carte.getObjectLayer("Ennemis").objects.forEach((ennemis)=>{
                     const ennemiSprite = this.ennemis.create(this.ennemis.x,this.ennemis.y-this.ennemis.height,'tank').setOrigin(0);
                 });
-                // const mapEnnemis = carte.getObjectLayer('Ennemis');
-                // mapEnnemis.objects.forEach(enObj =>{
-                // this.Ennemi.get(50,50,50);
-                // })
+                const mapEnnemis = carte.getObjectLayer('Ennemis');
+                mapEnnemis.objects.forEach(enObj =>{
+                this.Ennemi.get(50,50,50);
+                })
                 
                 
 
@@ -220,11 +222,13 @@
                 this.player.setCollideWorldBounds(true);
                 this.physics.add.collider(this.player, this.platforms);
 
+                
                 this.cameras.main.startFollow(this.player);
                 this.cameras.main.setZoom(2);
 
+                //collisions
                 this.physics.add.overlap(this.player, this.sortie, sortir, null, this);
-                this.physics.add.overlap(this.ennemis, this.Bullet, console.log("touché"));//this.ennemis.detruit
+                this.physics.add.overlap(this.ennemis, Bullet, console.log("touché"));//this.ennemis.detruit
 
 
                 //Animations
@@ -286,6 +290,38 @@
                     repeat: -1
                 });
 
+                this.anims.create({
+                    key: 'vieFull',
+                    frames: this.anims.generateFrameNumbers('vie', {frame : 0}),
+                    frameRate: 10,
+                    repeat: -1
+                });
+
+                this.anims.create({
+                    key: 'vie4',
+                    frames: this.anims.generateFrameNumbers('vie', {frame : 1}),
+                    frameRate: 10,
+                    repeat: -1
+                });
+                this.anims.create({
+                    key: 'vie3',
+                    frames: this.anims.generateFrameNumbers('vie', {frame : 2}),
+                    frameRate: 10,
+                    repeat: -1
+                });
+                this.anims.create({
+                    key: 'vie2',
+                    frames: this.anims.generateFrameNumbers('vie', {frame : 3}),
+                    frameRate: 10,
+                    repeat: -1
+                });
+                this.anims.create({
+                    key: 'vie1',
+                    frames: this.anims.generateFrameNumbers('vie', {frame : 4}),
+                    frameRate: 10,
+                    repeat: -1
+                });
+
                 function sortir() {
                     this.scene.start("scene2");
                 }
@@ -312,8 +348,9 @@
 
                 this.input.on('pointerdown', function (pointer) {
                     this.scene.isdown = true;
-                    this.mouseX = pointer.x;
-                    this.mouseY = pointer.y;
+                    this.mouseX = pointer.worldx;
+                    this.mouseY = pointer.worldy;
+                    console.log("bite")
                 });
                 this.input.on('pointermove', function (pointer) {
 
@@ -351,7 +388,6 @@
                 
                 else {
                     this.player.setVelocity(0,0);
-                    console.log(this.dir);
                     this.player.anims.currentAnim;
                     // if (this.dir = "O") { this.player.anims.play('left', true); }
                     // else if (this.dir = "E") { this.player.anims.play('right', true); }
@@ -444,8 +480,8 @@
                 
                 //tir 2
                 
-                 console.log(this.player.x)
-                 console.log(this.player.y)
+                // console.log(this.player.x)
+                 //console.log(this.player.y)
                 // this.ennemis.children.iterate(function (mouvement) {//pour chaque arbreMonstre enfant du groupe arbreMonstres
 
                     
@@ -463,12 +499,12 @@
                 //     }
                 // },this);
 
-                if (this.isdown == true && time > this.lastFired) {
+                if (this.isdown && time > this.lastFired) {
                     this.bullet = this.bullets.get();
                    
                     if (this.bullet) {
                         console.log("truc",this.bullet);
-                        this.bullet.fire(this.mouseX, this.mouseY, player);
+                        this.bullet.fire(this.mouseX, this.mouseY, this.player);
                         
                         this.lastFired = time + 50;
                     }
@@ -521,6 +557,16 @@
 
             update() { }
         }
+
+        class menu extends Phaser.Scene {
+            constructor() {
+                super("menu");
+            }
+            preload(){
+                this.load.image('tuiles', 'assets/menu.png');
+            }
+        }
+
         var config = {
             type: Phaser.CANVAS,
             width: 1920, height: 1080,
@@ -532,7 +578,7 @@
                 }
             },
 
-            scene: [sceneExemple, scene2],
+            scene: [sceneExemple, scene2, menu],
         };
         new Phaser.Game(config);
 
