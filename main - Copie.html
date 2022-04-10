@@ -179,8 +179,10 @@
                 this.add.image(400, 300, 'sky');
 
                 this.sortie = this.physics.add.staticGroup();
-                this.sortie.create(3000, 500, 'sortie');
+                this.sortie.create(3900, 3800, 'sortie');
 
+                this.sortie2 = this.physics.add.staticGroup();
+                this.sortie2.create(3900, 2625, 'sortie');
                 
                 //plateformes
                 this.platforms = this.physics.add.staticGroup();
@@ -206,6 +208,7 @@
                     "Calque de Tuiles 1",
                     tileset
                 );
+                //Ne marche plus après essais sur le tir
                 carte.getObjectLayer("Ennemis").objects.forEach((ennemis)=>{
                     const ennemiSprite = this.ennemis.create(this.ennemis.x,this.ennemis.y-this.ennemis.height,'tank').setOrigin(0);
                 });
@@ -220,12 +223,12 @@
                 this.physics.world.setBounds(0,2460,4050,1625)
                 this.cameras.main.setBounds(0, 2460, 4050, 1700);
 
-                this.player = this.physics.add.sprite(100, 3000, 'perso');
+                this.player = this.physics.add.sprite(50, 2625, 'perso');
                 this.player.setCollideWorldBounds(true);
                 this.physics.add.collider(this.player, this.platforms);
                 
 
-                this.vie = this.add.sprite(50,50, this.player.y, 'vie').setScrollFactor(0);
+                this.vie = this.add.sprite(400, 50, 'vie').setScrollFactor(0);
 
                 this.cameras.main.startFollow(this.player);
                 this.cameras.main.setZoom(2);
@@ -233,7 +236,7 @@
                 //collisions
                 this.physics.add.overlap(this.player, this.sortie, sortir, null, this);
                 this.physics.add.overlap(this.ennemis, Bullet, console.log("touché"));//this.ennemis.detruit
-                this.physics.add.overlap(this.player, this.ennemis, jppv(),console.log("Aïe"));
+                //this.physics.add.overlap(this.player, this.ennemis, jppv(),console.log("Aïe"));
 
                 //Animations
                 this.anims.create({
@@ -335,12 +338,12 @@
                 //     if (pve <= 0) {
                 //     this.detruit()
                 //     }}
-                function jppv(){
-                    this.viejoueur = this.viejoueur-1;
-                    if (this.viejoueur==0){
-                        this.scene.start("menu");
-                    }
-                }
+                // function jppv(){
+                //     this.viejoueur = this.viejoueur-1;
+                //     if (this.viejoueur==0){
+                //         this.scene.start("menu");
+                //     }
+                // }
                 function detruit () {
                     this.setActive(false);
                     this.setVisible(false);
@@ -490,9 +493,9 @@
                 
                 //tir 2
                 
-                // console.log(this.player.x)
-                 //console.log(this.player.y)
-                // this.ennemis.children.iterate(function (mouvement) {//pour chaque arbreMonstre enfant du groupe arbreMonstres
+                 console.log(this.player.x)
+                 console.log(this.player.y)
+                // this.ennemis.children.iterate(function (mouvement) {
 
                     
                 //     if(Phaser.Math.Distance.Between(this.ennemis.scene.player.body.x,this.ennemis.scene.player.body.y,this.ennemis.body.x,this.ennemis.body.y)<150) {
@@ -502,7 +505,7 @@
                 //     if(this.ennemis.body.velocity.x>0) {this.ennemis.anims.play('dright',true);}else{this.ennemis.anims.play('dleft',true);}
 
 
-                //     }else{//si il n'y a pas de joueur autour du monstre
+                //     }else{
                 //     if(this.ennemis.body.velocity.x>0) {this.ennemis.setVelocityX(this.ennemis.body.velocity.x-2);}else{this.ennemis.setVelocityX(0) }
                 //     if(this.ennemis.body.velocity.y>0) {this.ennemis.setVelocityY(this.ennemis.body.velocity.y-2);}else{this.ennemis.setVelocityY(0) }
                 //     if((this.ennemis.body.velocity.y==0)&&(this.ennemis.body.velocity.x==0) ){this.ennemis.anims.play('dup',true);}
