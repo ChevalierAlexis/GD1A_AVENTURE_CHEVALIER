@@ -44,6 +44,7 @@
                 this.bullets;
                 this.lastFired = 0;
                 this.isdown = false;
+                this.viejoueur = 5
                 
                 //tir
                 var Bullet = new Phaser.Class({      //Abandonner et revenir sur la version avec les angles wtf
@@ -143,36 +144,36 @@
                     runChildUpdate: true
                     });
 
-    // //ennemi
-    //             this.Ennemi = new Phaser.Class({
+    //ennemi
+                this.Ennemi = new Phaser.Class({
                     
-    //                 initialize:
-    //                     function Ennemi(pve,sx,sy) {
-    //                         this.physics.add.sprite(sx,sy,'ennemi');
-    //                         this.anims.play('left');
+                    initialize:
+                        function Ennemi(pve,sx,sy) {
+                            this.physics.add.sprite(sx,sy,'ennemi');
+                            this.anims.play('left');
 
-    //                     },
-    //                 // attaque: function (x, y) {
-    //                 //     this.bullet.fireEnnemi(this.player.x, this.player.y)
-    //                 // },
+                        },
+                    // attaque: function (x, y) {
+                    //     this.bullet.fireEnnemi(this.player.x, this.player.y)
+                    // },
 
-    //                 // perdpv: function () {
-    //                 //     pve = pve - 5
-    //                 //     if (pve <= 0) {
-    //                 //         this.detruit()
-    //                 //     }
-    //                 // },
+                    // perdpv: function () {
+                    //     pve = pve - 5
+                    //     if (pve <= 0) {
+                    //         this.detruit()
+                    //     }
+                    // },
 
-    //                 // detruit: function () {
-    //                 //     this.setActive(false);
-    //                 //     this.setVisible(false);
-    //                 // },
-    //                 preload: function (time,delta){
+                    // detruit: function () {
+                    //     this.setActive(false);
+                    //     this.setVisible(false);
+                    // },
+                    preload: function (time,delta){
                         
-    //                 },
-    //                 update: function () {
-    //                 }
-    //                 })
+                    },
+                    update: function () {
+                    }
+                    })
 
                 
                 this.add.image(400, 300, 'sky');
@@ -208,29 +209,31 @@
                 carte.getObjectLayer("Ennemis").objects.forEach((ennemis)=>{
                     const ennemiSprite = this.ennemis.create(this.ennemis.x,this.ennemis.y-this.ennemis.height,'tank').setOrigin(0);
                 });
-                const mapEnnemis = carte.getObjectLayer('Ennemis');
-                mapEnnemis.objects.forEach(enObj =>{
-                    this.ennemis.get(50,50,50);
-                })
+                // const mapEnnemis = carte.getObjectLayer('Ennemis');
+                // mapEnnemis.objects.forEach(enObj =>{
+                //     this.ennemis.get(50,50,50);
+                // })
                 
                 
 
                 //joueur, ennemis et cam
-                this.physics.world.setBounds(0,2460,4050,5000)
+                this.physics.world.setBounds(0,2460,4050,1625)
                 this.cameras.main.setBounds(0, 2460, 4050, 1700);
 
                 this.player = this.physics.add.sprite(100, 3000, 'perso');
                 this.player.setCollideWorldBounds(true);
                 this.physics.add.collider(this.player, this.platforms);
-
                 
+
+                this.vie = this.add.sprite(50,50, this.player.y, 'vie').setScrollFactor(0);
+
                 this.cameras.main.startFollow(this.player);
                 this.cameras.main.setZoom(2);
 
                 //collisions
                 this.physics.add.overlap(this.player, this.sortie, sortir, null, this);
                 this.physics.add.overlap(this.ennemis, Bullet, console.log("touché"));//this.ennemis.detruit
-
+                this.physics.add.overlap(this.player, this.ennemis, jppv(),console.log("Aïe"));
 
                 //Animations
                 this.anims.create({
@@ -325,17 +328,23 @@
 
                 function sortir() {
                     this.scene.start("scene2");
-                }
+                };
 
                 // function perdpv () {
                 //     pve = pve - 5
                 //     if (pve <= 0) {
                 //     this.detruit()
                 //     }}
+                function jppv(){
+                    this.viejoueur = this.viejoueur-1;
+                    if (this.viejoueur==0){
+                        this.scene.start("menu");
+                    }
+                }
                 function detruit () {
                     this.setActive(false);
                     this.setVisible(false);
-                }
+                };
 
 
 
@@ -351,7 +360,7 @@
                     this.scene.isdown = true;
                     this.mouseX = pointer.worldx;
                     this.mouseY = pointer.worldy;
-                    console.log("clic gauche")
+                    console.log("clic gauche");
                 });
                 this.input.on('pointermove', function (pointer) {
 
@@ -500,6 +509,26 @@
                 //     }
                 // },this);
 
+                //MAJ vie
+                if (this.viejoueur==5){
+                    this.vie.anims.play('vieFull', true);
+                }
+                else if (this.viejoueur==4){
+                    this.vie.anims.play('vie4', true);
+                }
+                else if (this.viejoueur==3){
+                    this.vie.anims.play('vie3', true);
+                }
+                else if (this.viejoueur==2){
+                    this.vie.anims.play('vie2', true);
+                }
+                else if (this.viejoueur==1){
+                    this.vie.anims.play('vie1', true);
+                }
+                else{
+                    this.scene.start("sceneExemple"); 
+                }
+
                 if (this.isdown && time > this.lastFired) {
                     this.bullet = this.bullets.get();
                    
@@ -564,7 +593,18 @@
                 super("menu");
             }
             preload(){
-                this.load.image('tuiles', 'assets/menu.png');
+                this.load.image('menu', 'assets/menu.png');
+                this.load.image('bouton', 'assets/Boutonplay.png');
+            }
+            create(){
+                this.add.image(960, 540, 'menu');
+                const bouton = this.add.sprite(1010, 650, 'bouton')
+                    .setInteractive()
+	                .on('pointerdown', () => bouton.setScale( 1.1 ))
+	                .on('pointerup', () =>{ bouton.setScale( 1 ), this.scene.start("sceneExemple")});
+                function lancer() {
+                    this.scene.start("sceneExemple");
+                };
             }
         }
 
@@ -579,7 +619,7 @@
                 }
             },
 
-            scene: [sceneExemple, scene2, menu],
+            scene: [menu,sceneExemple, scene2],
         };
         new Phaser.Game(config);
 
